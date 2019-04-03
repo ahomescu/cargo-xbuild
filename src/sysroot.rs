@@ -299,7 +299,25 @@ pub fn update(
         Err(e) => {
             writeln!(
                 stderr,
-                "Unable to copy the directory 'bin' from sysroot: {}",
+                "Unable to copy the directory 'bin' in 'lib/rustlib' from sysroot: {}",
+                e
+            )
+            .ok();
+        }
+    };
+    match util::cp_r(
+        &sysroot
+            .path()
+            .join("bin/rustlib")
+            .join(&meta.host)
+            .join("bin"),
+        &bin_dst,
+    ) {
+        Ok(()) => {}
+        Err(e) => {
+            writeln!(
+                stderr,
+                "Unable to copy the directory 'bin' in 'bin/rustlib' from sysroot: {}",
                 e
             )
             .ok();
